@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Baro
+Name[ko]=바로
+Comment=Path Quick Access Indicator
+Comment[ko]=경로 빠른 접근 인디케이터
+Exec=python3 /home/dinki/github/DINKIssTyle-Baro-Ubuntu/baro_indicator.py
+Icon=folder
+Terminal=false
+Type=Application
+Categories=Utility;System;
+Keywords=path;folder;shortcut;terminal;
+StartupNotify=false
+X-GNOME-Autostart-enabled=true
