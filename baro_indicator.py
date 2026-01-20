@@ -140,6 +140,20 @@ class BaroIndicator:
             refresh_item.set_image(icon)
         refresh_item.connect("activate", self.on_refresh)
         menu.append(refresh_item)
+
+        # 정보 메뉴 (About)
+        about_item = Gtk.ImageMenuItem()
+        about_item.set_label("About Baro")
+        about_item.set_always_show_image(True)
+        # 아이콘은 appicon 사용 (작게)
+        app_icon_path = os.path.join(self.icons_dir, "appicon.png")
+        if os.path.exists(app_icon_path):
+            # Scale simply by loading into Gtk.Image (might be big, but Gtk usually handles menu icons ok or we can accept it)
+            # Or use pixbuf to scale. For simplicity provided standard Gtk behavior:
+            icon = Gtk.Image.new_from_file(app_icon_path)
+            about_item.set_image(icon)
+        about_item.connect("activate", self.on_about)
+        menu.append(about_item)
         
         # 구분선
         menu.append(Gtk.SeparatorMenuItem())
@@ -226,6 +240,26 @@ class BaroIndicator:
         """메뉴 새로고침"""
         self.settings.load()
         self.build_menu()
+
+    def on_about(self, widget):
+        """앱 정보 대화상자 표시"""
+        about = Gtk.AboutDialog()
+        about.set_program_name("Baro")
+        about.set_version("1.0")
+        about.set_copyright("Copyright (C) 2026 DINKI'ssTyle")
+        about.set_comments("Path Quick Access Indicator for Ubuntu")
+        
+        app_icon_path = os.path.join(self.icons_dir, "appicon.png")
+        if os.path.exists(app_icon_path):
+            try:
+                from gi.repository import GdkPixbuf
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(app_icon_path, 128, 128, True)
+                about.set_logo(pixbuf)
+            except Exception as e:
+                print(f"Error loading logo: {e}")
+
+        about.run()
+        about.destroy()
     
     def on_quit(self, widget):
         """앱 종료"""
